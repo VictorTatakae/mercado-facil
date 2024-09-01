@@ -6,7 +6,6 @@ import 'package:compra_facil/app/core/consts/app_consts.dart';
 import 'package:compra_facil/app/repositories/theme_repository/theme_repository.dart';
 
 class SharedPreferencesTheme implements ThemeRepository {
-
   SharedPreferencesTheme();
 
   @override
@@ -17,8 +16,16 @@ class SharedPreferencesTheme implements ThemeRepository {
   }
 
   @override
-  Future<void> setTheme(ThemeMode mode) async {
+  setTheme(ThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(SETTINGS_KEY, mode.index);
+  }
+
+  @override
+  clear() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt(SETTINGS_KEY) != null) {
+      prefs.clear();
+    }
   }
 }
