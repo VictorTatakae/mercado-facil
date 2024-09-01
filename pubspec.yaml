@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_modular: ^6.3.4
   shared_preferences: ^2.3.2
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
   flutter_test:

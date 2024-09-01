@@ -5,7 +5,7 @@ import 'package:compra_facil/app/repositories/theme_repository/theme_repository.
 class AppTheme extends ValueNotifier<ThemeMode> {
   final ThemeRepository _repository;
 
-  AppTheme(this._repository) : super(ThemeMode.light) {
+  AppTheme(this._repository) : super(ThemeMode.dark) {
     loadMode();
   }
 
