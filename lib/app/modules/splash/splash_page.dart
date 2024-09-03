@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:compra_facil/app/core/theme/app_theme.dart';
+import 'package:compra_facil/app/modules/splash/splash_controller.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -13,6 +14,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final controller = Modular.get<SplashController>();
+
   @override
   void initState() {
     init();
@@ -20,9 +23,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void init() async {
-    await Future.delayed(const Duration(seconds: 2)).then((_) {
-      Modular.to.navigate('/home/');
-    });
+    // final items = await controller.loadItems();
+    Modular.to.navigate('/home/');
   }
 
   @override

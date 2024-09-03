@@ -16,13 +16,18 @@ class AppTheme extends ValueNotifier<ThemeMode> {
     brightness: Brightness.light,
     scaffoldBackgroundColor: const Color(0xFFf5f4f4),
     listTileTheme: ListTileThemeData(
-      tileColor: Colors.purpleAccent.shade700,
+      tileColor: Colors.deepPurple.shade400,
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedIconTheme: IconThemeData(
-        color: Colors.white,
-      ),
-    ),
+    navigationBarTheme: NavigationBarThemeData(iconTheme: WidgetStateProperty.resolveWith(
+      (states) {
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(
+            color: Colors.deepPurple.shade100,
+          );
+        }
+        return null;
+      },
+    )),
     iconTheme: IconThemeData(
       color: Colors.purpleAccent.shade700,
     ),
@@ -30,17 +35,17 @@ class AppTheme extends ValueNotifier<ThemeMode> {
       displayLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Colors.white,
       ),
       displayMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Colors.white,
       ),
       displaySmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Colors.white,
       ),
     ),
   );

@@ -31,7 +31,7 @@ class _AjustesPageState extends State<AjustesPage> {
                 trailing: ElevatedButton.icon(
                   label: Icon(
                     appTheme.isDark ? Icons.dark_mode : Icons.light_mode,
-                    color: appTheme.isDark ? Colors.deepPurple : Colors.yellow,
+                    color: appTheme.isDark ? Colors.deepPurple : Colors.deepPurple.shade400,
                   ),
                   onPressed: appTheme.toggle,
                 ),
@@ -39,7 +39,7 @@ class _AjustesPageState extends State<AjustesPage> {
               const SizedBox(height: 15),
               ListTile(
                 title: Text(
-                  'C A C H E   D O   T E M A',
+                  'C A C H E   T E M A',
                   style: textTheme.displayMedium,
                 ),
                 trailing: ElevatedButton.icon(

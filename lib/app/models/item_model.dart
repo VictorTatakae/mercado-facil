@@ -40,4 +40,16 @@ class ItemModel {
   }
 
   factory ItemModel.fromJson(String j) => ItemModel.fromMap(json.decode(j));
+
+  @override
+  bool operator ==(covariant ItemModel other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id && other.name == name && other.price == price && other.quantity == quantity;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^ name.hashCode ^ price.hashCode ^ quantity.hashCode;
+  }
 }

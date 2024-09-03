@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           animation: controller,
           builder: (context, _) {
             return NavigationBar(
-              height: 80,
+              height: 70,
               elevation: 0,
               selectedIndex: controller.index,
               onDestinationSelected: controller.changeDestination,
