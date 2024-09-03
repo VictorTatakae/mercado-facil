@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'package:compra_facil/app/core/theme/app_theme.dart';
 import 'package:compra_facil/app/models/item_model.dart';
 import 'package:compra_facil/app/modules/home/home_controller.dart';
 
@@ -14,16 +16,47 @@ class AddItem extends StatefulWidget {
 
 class _AddItemState extends State<AddItem> {
   final controller = Modular.get<HomeController>();
+  final appTheme = Modular.get<AppTheme>();
   final formKey = GlobalKey<FormState>();
+
+  // Controllers
   final nameEC = TextEditingController();
   final quantityEC = TextEditingController();
-  final priceEC = TextEditingController();
+  final priceEC = MoneyMaskedTextController(
+    leftSymbol: 'R\$ ',
+    decimalSeparator: ',',
+    thousandSeparator: '.',
+  );
+
+  // focus nodes
+  final _focusNode1 = FocusNode();
+  final _focusNode2 = FocusNode();
+  final _focusNode3 = FocusNode();
+
+  // SubmitAcion
+  submit(BuildContext context) {
+    if (formKey.currentState?.validate() ?? false) {
+      String priceString = priceEC.text.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', '');
+      final price = double.parse(priceString).toStringAsFixed(2);
+      final model = ItemModel(
+        name: nameEC.text.trim(),
+        price: double.parse(price),
+        quantity: int.parse(quantityEC.text.trim()),
+      );
+      controller.add(model);
+      controller.sumAll();
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   void dispose() {
     nameEC.dispose();
     quantityEC.dispose();
     priceEC.dispose();
+    _focusNode1.dispose();
+    _focusNode2.dispose();
+    _focusNode3.dispose();
     super.dispose();
   }
 
@@ -32,12 +65,12 @@ class _AddItemState extends State<AddItem> {
     return Dialog(
       backgroundColor: Colors.grey.shade900,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 5),
+        padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
         child: Form(
           key: formKey,
           child: SizedBox(
             width: double.infinity,
-            height: 450,
+            height: 300,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -46,11 +79,16 @@ class _AddItemState extends State<AddItem> {
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 30),
                 ),
                 TextFormField(
-                  // focusNode: focusNode,
+                  focusNode: _focusNode1,
+                  autofocus: true,
                   controller: nameEC,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.name,
                   textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_focusNode2);
+                  },
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),
                   decoration: const InputDecoration(
                     isDense: true,
@@ -75,10 +113,6 @@ class _AddItemState extends State<AddItem> {
                       borderSide: BorderSide(color: Colors.red),
                     ),
                   ),
-                  onFieldSubmitted: (value) {
-                    // handleNext();
-                    // focusNode.requestFocus();
-                  },
                   validator: (nome) {
                     if (nome == null || nome.isEmpty) {
                       return 'Campo obrigatório!';
@@ -87,11 +121,15 @@ class _AddItemState extends State<AddItem> {
                   },
                 ),
                 TextFormField(
-                  // focusNode: focusNode,
+                  focusNode: _focusNode2,
                   controller: quantityEC,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_focusNode3);
+                  },
                   decoration: const InputDecoration(
                     isDense: true,
                     hintText: 'Quantidade',
@@ -115,10 +153,6 @@ class _AddItemState extends State<AddItem> {
                       borderSide: BorderSide(color: Colors.red),
                     ),
                   ),
-                  onFieldSubmitted: (value) {
-                    // handleNext();
-                    // focusNode.requestFocus();
-                  },
                   validator: (qtd) {
                     if (qtd == null || qtd.isEmpty) {
                       return 'Campo obrigatório!';
@@ -129,10 +163,14 @@ class _AddItemState extends State<AddItem> {
                   },
                 ),
                 TextFormField(
-                  // focusNode: focusNode,
+                  focusNode: _focusNode3,
                   controller: priceEC,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    submit(context);
+                  },
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),
                   decoration: const InputDecoration(
                     isDense: true,
@@ -157,32 +195,23 @@ class _AddItemState extends State<AddItem> {
                       borderSide: BorderSide(color: Colors.red),
                     ),
                   ),
-                  onFieldSubmitted: (value) {
-                    // handleNext();
-                    // focusNode.requestFocus();
-                  },
                   validator: (price) {
                     if (price == null || price.isEmpty) {
                       return 'Campo obrigatório!';
                     }
-                    double? n = double.tryParse(price);
+                    String priceString = price.replaceAll('.', '').replaceAll(',', '.').replaceAll('R\$ ', '');
+                    double? n = double.tryParse(priceString);
 
                     return n == null ? 'Este campo só recebe double' : null;
                   },
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState?.validate() ?? false) {
-                      final price = double.parse(priceEC.text).toStringAsFixed(2);
-                      final model = ItemModel(
-                        name: nameEC.text.trim(),
-                        price: double.parse(price),
-                        quantity: int.parse(quantityEC.text.trim()),
-                      );
-                      controller.add(model);
-                      Navigator.of(context).pop();
-                    }
-                  },
+                  onPressed: () => submit(context),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStatePropertyAll(appTheme.isDark ? Colors.deepPurple : Colors.deepPurple.shade400),
+                    foregroundColor: const WidgetStatePropertyAll(Colors.white),
+                  ),
                   child: const Text('Adicionar'),
                 ),
               ],

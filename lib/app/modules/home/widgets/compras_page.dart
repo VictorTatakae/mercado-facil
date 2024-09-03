@@ -94,6 +94,26 @@ class _ComprasPageState extends State<ComprasPage> {
                 label: const Icon(Icons.add),
               ),
             ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (_, __) {
+                        return Text(
+                          'R\$${controller.total}',
+                          style: Theme.of(context).textTheme.displaySmall,
+                        );
+                      }),
+                ),
+              ),
+            ),
           ],
         ),
       ),

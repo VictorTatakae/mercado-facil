@@ -9,6 +9,7 @@ import 'package:compra_facil/app/modules/home/widgets/lista_page.dart';
 class HomeController extends ChangeNotifier {
   // final ItemRepository _repository;
   int index = 1;
+  double total = 0.00;
   final items = <ItemModel>[];
 
   // HomeController(this._repository);
@@ -29,6 +30,11 @@ class HomeController extends ChangeNotifier {
       default:
         return const SizedBox.shrink();
     }
+  }
+
+  sumAll() {
+    total = ItemModel.sumAll(items);
+    notifyListeners();
   }
 
   add(ItemModel model) {
