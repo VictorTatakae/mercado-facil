@@ -6,4 +6,5 @@ abstract interface class ItemRepository {
   addItem(ItemModel model);
   updateItem(ItemModel model);
   deleteItem(ItemModel model);
+  deleteAll();
 }

@@ -4,7 +4,6 @@ import 'package:compra_facil/app/repositories/item/item_repository.dart';
 class ItemMemory implements ItemRepository {
   final items = <ItemModel>[];
 
-  
   @override
   addItem(ItemModel model) {
     items.add(model);
@@ -29,5 +28,10 @@ class ItemMemory implements ItemRepository {
   updateItem(ItemModel model) async {
     final index = items.indexOf(model);
     items[index] = model;
+  }
+
+  @override
+  deleteAll() {
+    items.clear();
   }
 }

@@ -10,6 +10,12 @@ class ListaPage extends StatefulWidget {
 class _ListaPageState extends State<ListaPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+      child: Text(
+        'Tela não implementada \nno momento...',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.displayLarge,
+      ),
+    );
   }
 }

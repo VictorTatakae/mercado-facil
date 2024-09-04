@@ -38,29 +38,60 @@ class _ComprasPageState extends State<ComprasPage> {
                         ? ListView.separated(
                             itemCount: controller.items.length,
                             itemBuilder: (_, index) {
-                              return Container(
-                                width: double.infinity,
-                                height: 65,
-                                decoration: BoxDecoration(
-                                  color: appTheme.isDark ? Colors.black.withOpacity(.2) : Colors.deepPurple[300],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      controller.items[index].name,
-                                      style: textTheme.displaySmall,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('${controller.items[index].quantity}x', style: style),
-                                        Text('R\$${controller.items[index].price.toStringAsFixed(2)}', style: style),
-                                        Text('R\$${controller.items[index].total().toStringAsFixed(2)}', style: style),
-                                      ],
-                                    ),
-                                  ],
+                              return InkWell(
+                                onLongPress: () {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Confirmação'),
+                                        content: const Text('Deseja apagar este produto?'),
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () => Navigator.of(context).pop(),
+                                            child: const Text(
+                                              'Cancelar',
+                                              style: TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              controller.remove(controller.items[index]);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Confirmar'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    color: appTheme.isDark ? Colors.black.withOpacity(.2) : Colors.deepPurple[300],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        controller.items[index].name,
+                                        style: textTheme.displaySmall,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text('${controller.items[index].quantity}x', style: style),
+                                          Text('R\$${controller.items[index].price.toStringAsFixed(2)}', style: style),
+                                          Text('R\$${controller.items[index].total().toStringAsFixed(2)}',
+                                              style: style),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -98,7 +129,7 @@ class _ComprasPageState extends State<ComprasPage> {
               alignment: Alignment.topRight,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple,
+                  color: appTheme.isDark ? Colors.deepPurple : Colors.cyanAccent.shade700,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(

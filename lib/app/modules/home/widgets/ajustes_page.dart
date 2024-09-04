@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:compra_facil/app/core/theme/app_theme.dart';
+import 'package:compra_facil/app/modules/home/home_controller.dart';
 
 class AjustesPage extends StatefulWidget {
   const AjustesPage({super.key});
@@ -12,6 +13,7 @@ class AjustesPage extends StatefulWidget {
 }
 
 class _AjustesPageState extends State<AjustesPage> {
+  final controller = Modular.get<HomeController>();
   @override
   Widget build(BuildContext context) {
     final appTheme = Modular.get<AppTheme>();
@@ -44,6 +46,19 @@ class _AjustesPageState extends State<AjustesPage> {
                 ),
                 trailing: ElevatedButton.icon(
                   onPressed: appTheme.clear,
+                  label: const Icon(Icons.delete, color: Colors.red),
+                ),
+              ),
+              const SizedBox(height: 15),
+              ListTile(
+                title: Text(
+                  'C A C H E   I T E N S',
+                  style: textTheme.displayMedium,
+                ),
+                trailing: ElevatedButton.icon(
+                  onPressed: () async {
+                    await controller.removeAll();
+                  },
                   label: const Icon(Icons.delete, color: Colors.red),
                 ),
               ),

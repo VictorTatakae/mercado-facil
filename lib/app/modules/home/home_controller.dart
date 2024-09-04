@@ -4,15 +4,24 @@ import 'package:compra_facil/app/models/item_model.dart';
 import 'package:compra_facil/app/modules/home/widgets/ajustes_page.dart';
 import 'package:compra_facil/app/modules/home/widgets/compras_page.dart';
 import 'package:compra_facil/app/modules/home/widgets/lista_page.dart';
+import 'package:compra_facil/app/repositories/item/item_repository.dart';
 // import 'package:compra_facil/app/repositories/item/item_repository.dart';
 
 class HomeController extends ChangeNotifier {
-  // final ItemRepository _repository;
+  final ItemRepository _repository;
   int index = 1;
   double total = 0.00;
-  final items = <ItemModel>[];
+  var items = <ItemModel>[];
 
-  // HomeController(this._repository);
+  HomeController(this._repository) {
+    getItems();
+  }
+
+  getItems() async {
+    items = await _repository.getAll();
+    sumAll();
+    notifyListeners();
+  }
 
   changeDestination(int value) {
     index = value;
@@ -33,16 +42,29 @@ class HomeController extends ChangeNotifier {
   }
 
   sumAll() {
-    total = ItemModel.sumAll(items);
+    var sum = 0.0;
+    for (var item in items) {
+      sum += item.total();
+    }
+    total = double.parse(sum.toStringAsFixed(2));
     notifyListeners();
   }
 
-  add(ItemModel model) {
-    items.add(model);
+  add(ItemModel model) async {
+    await _repository.addItem(model);
+    getItems();
     notifyListeners();
   }
 
-  List<ItemModel> getAll() {
-    return items;
+  remove(ItemModel model) async {
+    await _repository.deleteItem(model);
+    getItems();
+    notifyListeners();
+  }
+
+  removeAll() async {
+    await _repository.deleteAll();
+    getItems();
+    notifyListeners();
   }
 }

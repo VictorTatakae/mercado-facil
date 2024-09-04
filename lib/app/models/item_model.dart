@@ -18,12 +18,6 @@ class ItemModel {
   double total() => price * quantity;
   double price30() => price * 1.3;
 
-  static double sumAll(List<ItemModel> items) {
-    if (items.isEmpty) return 0.00;
-    var value = items.map((item) => item.total()).reduce((value, element) => value + element).toStringAsFixed(2);
-    return double.parse(value);
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
