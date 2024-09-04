@@ -100,7 +100,9 @@ class _ComprasPageState extends State<ComprasPage> {
                         : Center(
                             child: Text(
                               'Nenhum produto encontrado!',
-                              style: Theme.of(context).textTheme.displayMedium,
+                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                    color: appTheme.isDark ? Colors.white : Colors.black,
+                                  ),
                             ),
                           );
                   }),
